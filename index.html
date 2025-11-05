@@ -751,45 +751,45 @@
   </header>
   <br>
   <script>
-    function verificarHorario() {
-      const agora = new Date();
-      const dia = agora.getDay(); // 0=Dom, 1=Seg, ..., 6=Sáb
-      const hora = agora.getHours();
-      const minuto = agora.getMinutes();
+  function verificarHorario() {
+    const agora = new Date();
+    const dia = agora.getDay(); // 0=Dom, 1=Seg, ..., 6=Sáb
+    const hora = agora.getHours();
+    const minuto = agora.getMinutes();
 
-      const aviso = document.getElementById("aviso-horario");
+    const aviso = document.getElementById("aviso-horario");
 
-      // Quinta-feira (dia 4) = fechado
-      const fechadoHoje = (dia === 4);
+    // Quinta-feira (dia 4) = fechado
+    const fechadoHoje = (dia === 4);
 
-      // Horário de funcionamento: 15h às 22h
-      const dentroHorario = (hora > 7 || (hora === 8 && minuto >= 0)) && hora < 23;
+    // Horário de funcionamento: 15h às 22h
+    const dentroHorario = (hora > 8 && hora < 22) || (hora === 8 && minuto >= 0); // alterar 8 p/ 14
 
-      const aberto = !fechadoHoje && dentroHorario;
+    const aberto = !fechadoHoje && dentroHorario;
 
-      if (aberto) {
-        aviso.className = "aviso-horario aviso-aberto";
-        aviso.innerHTML = "✅ Estamos ABERTOS! das 15h às 22h.";
-        ativarInputs(true);
-      } else {
-        aviso.className = "aviso-horario aviso-fechado";
-        aviso.innerHTML = "⛔ Estamos FECHADOS agora. Lembrete: Quinta é folga.";
-        ativarInputs(false);
-      }
+    if (aberto) {
+      aviso.className = "aviso-horario aviso-aberto";
+      aviso.innerHTML = "✅ Estamos ABERTOS! das 15h às 22h.";
+      ativarInputs(true);
+    } else {
+      aviso.className = "aviso-horario aviso-fechado";
+      aviso.innerHTML = "⛔ Estamos FECHADOS agora. Lembrete: Quinta é folga.";
+      ativarInputs(false);
     }
+  }
 
-    function ativarInputs(ativo) {
-      document.querySelectorAll("button, input, select, textarea").forEach(el => {
-        el.disabled = !ativo;
-      });
-    }
-
-    // Garante que só roda depois que a página carregar
-    window.addEventListener("DOMContentLoaded", () => {
-      verificarHorario();
-      setInterval(verificarHorario, 60000); // revalida a cada minuto
+  function ativarInputs(ativo) {
+    document.querySelectorAll("button, input, select, textarea").forEach(el => {
+      el.disabled = !ativo;
     });
-  </script>
+  }
+
+  window.addEventListener("DOMContentLoaded", () => {
+    verificarHorario();
+    setInterval(verificarHorario, 60000);
+  });
+</script>
+
 
   <main class="container">
     <div id="aviso-horario" class="aviso-horario"></div>
@@ -1021,7 +1021,7 @@
 
     const EMOJI = {
       Banana: "🍌", Morango: "🍓", Manga: "🥭", Kiwi: "🥝", Uva: "🍇", Abacaxi: "🍍",
-      Pera: "🍐", "Melão": "🍈", "Mamão": "🍈", Pitaia: "🐉",
+      Pera: "🍐", "Melão": "🍈", "Mamão": "🍈", Pitaia: "🥝",
       Granola: "🥣", "Leite em pó": "🥛", Paçoca: "🥜", Amendoim: "🥜", Jujuba: "🍬", Castanha: "🌰",
       Cereal: "🥣", Tapioca: "🌾", Look: "🍫", Chocoball: "🍫", Confete: "🍭", Cookies: "🍪",
       "Disquete de chocolatee": "🍫", "Pé de moleque": "🥜", Sucrilhos: "🥣", "Farinha lactea": "🥛",
