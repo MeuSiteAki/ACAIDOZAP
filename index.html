@@ -763,7 +763,7 @@
       const fechadoHoje = (dia === 4);
 
       // Horário de funcionamento: 15h às 22h
-      const dentroHorario = (hora > 15 || (hora === 8 && minuto >= 0)) && hora < 23;
+      const dentroHorario = (hora > 7 || (hora === 8 && minuto >= 0)) && hora < 23;
 
       const aberto = !fechadoHoje && dentroHorario;
 
