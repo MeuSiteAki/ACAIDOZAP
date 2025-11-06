@@ -676,7 +676,7 @@
       const aviso = document.getElementById("aviso-horario");
 
       const fechadoHoje = (dia === 1); // Quinta
-      const dentroHorario = (hora > 15 && hora < 22) || (hora === 15 && minuto >= 0);
+      const dentroHorario = (hora > 8 && hora < 22) || (hora === 8 && minuto >= 0);
       const aberto = !fechadoHoje && dentroHorario;
 
       if (aberto) {
