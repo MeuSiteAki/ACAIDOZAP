@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Açaiteria Itinga</title>
+  <title>Açai do Zap</title>
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -199,7 +199,7 @@
     .big-toast.show { opacity: 1; transform: translate(-50%, -50%) scale(1); }
 
     #btnTop {
-      position: fixed; bottom: 120px; right: 20px; z-index: 1000;
+      position: fixed; bottom: 120px; right: 20px; z-index: 10;
       background: #8e44ad; color: #fff; border: none; border-radius: 50%; width: 50px; height: 50px; font-size: 22px; cursor: pointer;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     }
@@ -273,9 +273,7 @@
       <div class="info-block">
         <h3><i class="fas fa-user"></i> Criado por</h3>
         <p>Carlos de F. R.</p>
-      </div>
-
-      <div class="info-block">
+    
         <h3><i class="fas fa-phone"></i> Contato</h3>
         <a href="https://wa.me/5599992247544" target="_blank" class="whatsapp-link">
           <i class="fab fa-whatsapp"></i> Fale no WhatsApp
@@ -675,8 +673,8 @@
       const minuto = agora.getMinutes();
       const aviso = document.getElementById("aviso-horario");
 
-      const fechadoHoje = (dia === 1); // Quinta
-      const dentroHorario = (hora > 8 && hora < 22) || (hora === 8 && minuto >= 0);
+      const fechadoHoje = (dia === 4); // Quinta
+      const dentroHorario = (hora > 15 && hora < 24) || (hora === 15 && minuto >= 0); // alterar horas
       const aberto = !fechadoHoje && dentroHorario;
 
       if (aberto) {
@@ -1168,123 +1166,130 @@
     });
 
     // Envio WhatsApp (inclui dinheiro/troco e garrafas)
-    sendWhatsappBtn.addEventListener('click', async () => {
-      if (cart.length === 0) return alert('Adicione ao menos um item (copo, garrafa ou bebidas) ao carrinho.');
-      if (!nameInput.value.trim()) return alert('Informe seu nome.');
-      if (!phoneInput.value.trim()) return alert('Informe seu telefone.');
-      if (!addressInput.value.trim()) return alert('Informe seu endereço.');
-      if (!neighborhoodInput.value) return alert('Informe seu bairro.');
-      if (!paymentInput.value) return alert('Selecione a forma de pagamento.');
+ sendWhatsappBtn.addEventListener('click', async () => {
+  if (cart.length === 0) return alert('Adicione ao menos um item (copo, garrafa ou bebidas) ao carrinho.');
+  if (!nameInput.value.trim()) return alert('Informe seu nome.');
+  if (!phoneInput.value.trim()) return alert('Informe seu telefone.');
+  if (!addressInput.value.trim()) return alert('Informe seu endereço.');
+  if (!neighborhoodInput.value) return alert('Informe seu bairro.');
+  if (!paymentInput.value) return alert('Selecione a forma de pagamento.');
 
-      const totals = cartTotals();
-      const total = totals.total;
+  const totals = cartTotals();
+  const total = totals.total;
 
-      const itensTrad = cart.filter(i => i.tipo === 'Tradicional');
-      const itensPers = cart.filter(i => i.tipo === 'Personalizado');
-      const itensDrinks = cart.filter(i => i.tipo === 'Bebidas');
-      const itensGarrafa = cart.filter(i => i.tipo === 'Garrafa');
+  const itensTrad = cart.filter(i => i.tipo === 'Tradicional');
+  const itensPers = cart.filter(i => i.tipo === 'Personalizado');
+  const itensDrinks = cart.filter(i => i.tipo === 'Bebidas');
+  const itensGarrafa = cart.filter(i => i.tipo === 'Garrafa');
 
-      const formatItem = (item, idx) => [
-        `*#${idx + 1}*`,
-        item.size ? `• Copo: ${item.size}ml` : null,
-        `• Preço: ${formatBRL(item.price)}`,
-        item.tipo === 'Personalizado' ? `• Frutas: ${item.fruits.join(', ') || '-'}` : null,
-        item.tipo === 'Personalizado' ? `• Ingredientes: ${item.ingredients.join(', ') || '-'}` : (item.tipo === 'Tradicional' ? `• Ingredientes: Tapioca, Leite condensado` : null),
-        item.topping ? `• Cobertura: ${item.topping}` : null,
-        item.extras?.length ? `• Adicionais: ${item.extras.join(', ')}` : null,
-        item.drinks?.length ? `• Bebidas: ${item.drinks.map(d => `${d.label} (${formatBRL(d.price)})`).join(', ')}` : null,
-        item.notes ? `• Obs.: ${item.notes}` : null
-      ].filter(Boolean).join('\n');
+  const formatItem = (item, idx) => [
+    `*#${idx + 1}*`,
+    item.size ? `• Copo: ${item.size}ml` : null,
+    `• Preço: ${formatBRL(item.price)}`,
+    item.tipo === 'Personalizado' ? `• Frutas: ${item.fruits.join(', ') || '-'}` : null,
+    item.tipo === 'Personalizado' ? `• Ingredientes: ${item.ingredients.join(', ') || '-'}` : (item.tipo === 'Tradicional' ? `• Ingredientes: Tapioca, Leite condensado` : null),
+    item.topping ? `• Cobertura: ${item.topping}` : null,
+    item.extras?.length ? `• Adicionais: ${item.extras.join(', ')}` : null,
+    item.drinks?.length ? `• Bebidas: ${item.drinks.map(d => `${d.label} (${formatBRL(d.price)})`).join(', ')}` : null,
+    item.notes ? `• Obs.: ${item.notes}` : null
+  ].filter(Boolean).join('\n');
 
-      const blocoTrad = itensTrad.length
-        ? ['🍨 *Tradicionais*', ...itensTrad.map((it, idx) => formatItem(it, idx))].join('\n\n')
-        : '🍨 *Tradicionais*\nNenhum';
+  const blocoTrad = itensTrad.length
+    ? ['🍨 *Tradicionais*', ...itensTrad.map((it, idx) => formatItem(it, idx))].join('\n\n')
+    : '🍨 *Tradicionais*\nNenhum';
 
-      const blocoPers = itensPers.length
-        ? ['🍧 *Personalizados*', ...itensPers.map((it, idx) => formatItem(it, idx))].join('\n\n')
-        : '🍧 *Personalizados*\nNenhum';
+  const blocoPers = itensPers.length
+    ? ['🍧 *Personalizados*', ...itensPers.map((it, idx) => formatItem(it, idx))].join('\n\n')
+    : '🍧 *Personalizados*\nNenhum';
 
-      const blocoDrinks = itensDrinks.length
-        ? ['🥤 *Bebidas*', ...itensDrinks.map((it, idx) => formatItem(it, idx))].join('\n\n')
-        : '';
+  const blocoDrinks = itensDrinks.length
+    ? ['🥤 *Bebidas*', ...itensDrinks.map((it, idx) => formatItem(it, idx))].join('\n\n')
+    : '';
 
-      const blocoGarrafa = itensGarrafa.length
-        ? ['🧴 *Garrafas 300ml*',
-           ...itensGarrafa.map((it, idx) => `#${idx+1} — ${capitalize(it.sabor)} (${it.qtd}x) = ${formatBRL(it.price)}`)]
-          .join('\n\n')
-        : '🧴 *Garrafas 300ml*\nNenhuma';
+  const blocoGarrafa = itensGarrafa.length
+    ? ['🧴 *Garrafas 300ml*',
+       ...itensGarrafa.map((it, idx) => `#${idx+1} — ${capitalize(it.sabor)} (${it.qtd}x) = ${formatBRL(it.price)}`)]
+      .join('\n\n')
+    : '🧴 *Garrafas 300ml*\nNenhuma';
 
-      const taxaEntrega = (neighborhoodInput.value === "Itinga-PA" && cart.length > 0) 
-        ? `\nTaxa de entrega (Itinga-PA): R$ 3,00` 
-        : '';
+  const taxaEntrega = (neighborhoodInput.value === "Itinga-PA" && cart.length > 0) 
+    ? `\nTaxa de entrega (Itinga-PA): R$ 3,00` 
+    : '';
 
-      let customerFields = [
-        `*Cliente:* ${nameInput.value.trim()}`,
-        `*Telefone:* ${phoneInput.value.trim()}`,
-        `*Endereço:* ${addressInput.value.trim()}`,
-        `*Bairro:* ${neighborhoodInput.value}`,
-        `*Pagamento:* ${paymentInput.value}`
-      ].join('\n');
+  // Observações do campo original
+  const notes = document.getElementById('notes')?.value.trim() || '';
 
-      if (paymentInput.value === "Dinheiro" && dinheiroEntregue > 0) {
-        customerFields += `\n*Troco:* ${formatBRL(trocoCalculado)}`;
-      }
-      if (paymentInput.value === "Pix") {
-        customerFields += `\n*Chave Pix:* ${PIX_KEY}`;
-      }
+  let customerFields = [
+    `*Cliente:* ${nameInput.value.trim()}`,
+    `*Telefone:* ${phoneInput.value.trim()}`,
+    `*Endereço:* ${addressInput.value.trim()}`,
+    `*Bairro:* ${neighborhoodInput.value}`,
+    `*Pagamento:* ${paymentInput.value}`
+  ].join('\n');
 
-      // Mensagem final compacta
-      const message = [
-        '🍧 *Pedido — Açaiteria Itinga* 🍧',
-        '----------------',
-        blocoTrad,
-        '----------------',
-        blocoPers,
-        blocoDrinks ? '----------------' : '',
-        blocoDrinks,
-        '----------------',
-        blocoGarrafa,
-        '----------------',
-        `*TOTAL GERAL:* ${formatBRL(total)}${taxaEntrega}`,
-        '----------------',
-        customerFields
-      ].filter(Boolean).join('\n');
+  if (paymentInput.value === "Dinheiro" && dinheiroEntregue > 0) {
+    customerFields += `\n*Troco:* ${formatBRL(trocoCalculado)}`;
+  }
+  if (paymentInput.value === "Pix") {
+    customerFields += `\n*Chave Pix:* ${PIX_KEY}`;
+  }
+  if (notes) {
+    customerFields += `\n*Obs.:* ${notes}`;
+  }
 
-      const phone = '559992247544';
-      const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-      window.open(url, '_blank');
+  // Mensagem final compacta
+  const message = [
+    '🍧 *Pedido — Açai do Zap* 🍧',
+    '----------------',
+    blocoTrad,
+    '----------------',
+    blocoPers,
+    blocoDrinks ? '----------------' : '',
+    blocoDrinks,
+    '----------------',
+    blocoGarrafa,
+    '----------------',
+    `*TOTAL GERAL:* ${formatBRL(total)}${taxaEntrega}`,
+    '----------------',
+    customerFields
+  ].filter(Boolean).join('\n');
 
-      const pedido = {
-        cliente: nameInput.value.trim(),
-        telefone: phoneInput.value.trim(),
-        endereco: addressInput.value.trim(),
-        bairro: neighborhoodInput.value,
-        pagamento: paymentInput.value,
-        itens: cart,
-        total,
-        taxaEntrega: neighborhoodInput.value === "Itinga-PA" ? 3 : 0,
-        dinheiroEntregue,
-        trocoCalculado,
-        status: "pendente",
-        data: new Date().toISOString()
-      };
+  const phone = '559992247544';
+  const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+  window.open(url, '_blank');
 
-      try {
-        if (window.salvarPedido) await window.salvarPedido(pedido);
-      } catch (err) {
-        console.error('Erro ao salvar pedido:', err);
-        Swal.fire({ icon: 'error', title: 'Erro ao salvar', text: 'O pedido foi enviado no WhatsApp, mas não foi salvo no sistema.' });
-      }
+  const pedido = {
+    cliente: nameInput.value.trim(),
+    telefone: phoneInput.value.trim(),
+    endereco: addressInput.value.trim(),
+    bairro: neighborhoodInput.value,
+    pagamento: paymentInput.value,
+    observacoes: notes, // salva também no Firestore
+    itens: cart,
+    total,
+    taxaEntrega: neighborhoodInput.value === "Itinga-PA" ? 3 : 0,
+    dinheiroEntregue,
+    trocoCalculado,
+    status: "pendente",
+    data: new Date().toISOString()
+  };
 
-Swal.fire({ 
-  icon: 'success', 
-  title: 'Pedido enviado!', 
-  text: 'Seu pedido foi enviado e salvo no sistema.' 
-}).then(() => {
-  location.reload(); // recarrega a página, limpa tudo e volta ao início
+  try {
+    if (window.salvarPedido) await window.salvarPedido(pedido);
+  } catch (err) {
+    console.error('Erro ao salvar pedido:', err);
+    Swal.fire({ icon: 'error', title: 'Erro ao salvar', text: 'O pedido foi enviado no WhatsApp, mas não foi salvo no sistema.' });
+  }
+
+  Swal.fire({ 
+    icon: 'success', 
+    title: 'Pedido enviado!', 
+    text: 'Seu pedido foi enviado e salvo no sistema.' 
+  }).then(() => {
+    location.reload(); // recarrega a página, limpa tudo e volta ao início
+  });
 });
-
-    });
+y
 
     // PIX BR Code
     function buildPixBRCode({ key, name, city, amount, txid = 'ACAI' }) {
