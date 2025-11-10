@@ -674,7 +674,7 @@
       const aviso = document.getElementById("aviso-horario");
 
       const fechadoHoje = (dia === 4); // Quinta
-      const dentroHorario = (hora > 15 && hora < 24) || (hora === 15 && minuto >= 0); // alterar horas
+      const dentroHorario = (hora > 8 && hora < 24) || (hora === 8 && minuto >= 0); // alterar horas
       const aberto = !fechadoHoje && dentroHorario;
 
       if (aberto) {
@@ -1289,7 +1289,7 @@
     location.reload(); // recarrega a página, limpa tudo e volta ao início
   });
 });
-y
+
 
     // PIX BR Code
     function buildPixBRCode({ key, name, city, amount, txid = 'ACAI' }) {
