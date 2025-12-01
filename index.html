@@ -592,9 +592,9 @@
       Chocolate: "🍫", Caramelo: "🍯", "Leite condensado": "🥛"
     };
 
-    const PIX_KEY = '+5599992247544';
-    const PIX_NAME = 'Carlos de Freitas Rocha';
-    const PIX_CITY = 'IMPERATRIZ';
+    const PIX_KEY = '+5599991208641';
+    const PIX_NAME = 'Francisco Dheime Silva';
+    const PIX_CITY = 'Itinga do MA';
 
     const formatBRL = n => Number(n).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 
@@ -659,43 +659,48 @@
       e.preventDefault();
       const text = document.getElementById("feedbackText").value.trim();
       if (!text) return alert("Digite sua mensagem.");
-      const url = `https://wa.me/5599992247544?text=${encodeURIComponent("Feedback: " + text)}`;
+      const url = `https://wa.me/5599991208641?text=${encodeURIComponent("Feedback: " + text)}`;
       window.open(url, "_blank");
       sideMenu.classList.remove("open");
       document.getElementById("feedbackText").value = "";
     });
 
     // Aviso horário + bloqueio inputs
-    function verificarHorario() {
-      const agora = new Date();
-      const dia = agora.getDay(); // 0=Dom, 1=Seg, ..., 6=Sáb
-      const hora = agora.getHours();
-      const minuto = agora.getMinutes();
-      const aviso = document.getElementById("aviso-horario");
+  function verificarHorario() {
+  const agora = new Date();
+  const dia = agora.getDay(); // 0=Dom, 1=Seg, ..., 6=Sáb
+  const hora = agora.getHours();
+  const minuto = agora.getMinutes();
+  const aviso = document.getElementById("aviso-horario");
 
-      const fechadoHoje = (dia === 4); // Quinta
-      const dentroHorario = (hora > 8 && hora < 24) || (hora === 8 && minuto >= 0); // alterar horas
-      const aberto = !fechadoHoje && dentroHorario;
+  const fechadoHoje = (dia === 4); // Quinta é folga
+  // Horário de funcionamento: das 15h às 22h
+  const dentroHorario = (hora > 8 && hora < 22) || (hora === 15 && minuto >= 0);
+  const aberto = !fechadoHoje && dentroHorario;
 
-      if (aberto) {
-        aviso.className = "aviso-horario aviso-aberto";
-        aviso.innerHTML = "✅ Estamos ABERTOS! das 15h às 22h.";
-        ativarInputs(true);
-      } else {
-        aviso.className = "aviso-horario aviso-fechado";
-        aviso.innerHTML = "⛔ Estamos FECHADOS agora. Lembrete: Quinta é folga.";
-        ativarInputs(false);
-      }
-    }
-    function ativarInputs(ativo) {
-      document.querySelectorAll(".toggle-btn, .add-to-cart-big, input[type=radio], input[type=checkbox], input[type=number], select, textarea")
-        .forEach(el => { el.disabled = !ativo; });
-      // Menu e WhatsApp link do topo continuam funcionais
-    }
-    window.addEventListener("DOMContentLoaded", () => {
-      verificarHorario();
-      setInterval(verificarHorario, 60000);
-    });
+  if (aberto) {
+    aviso.className = "aviso-horario aviso-aberto";
+    aviso.innerHTML = "✅ Estamos ABERTOS! das 15h às 22h.";
+    ativarInputs(true);
+  } else {
+    aviso.className = "aviso-horario aviso-fechado";
+    aviso.innerHTML = fechadoHoje
+      ? "⛔ Estamos FECHADOS agora. Quinta é folga."
+      : "⛔ Estamos FECHADOS agora. Horário de funcionamento: 15h às 22h.";
+    ativarInputs(false);
+  }
+}
+
+function ativarInputs(ativo) {
+  document.querySelectorAll(".toggle-btn, .add-to-cart-big, input[type=radio], input[type=checkbox], input[type=number], select, textarea")
+    .forEach(el => { el.disabled = !ativo; });
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+  verificarHorario();
+  setInterval(verificarHorario, 60000);
+});
+
 
     // Render opções SEM imagens
     function createTextOption(labelText, name, type = "checkbox") {
@@ -999,6 +1004,7 @@
     }
     resetBtn.addEventListener('click', () => resetSelections(true));
 
+// carrinho
     function renderCart() {
       cartItems.innerHTML = '';
       if (cart.length === 0) {
@@ -1254,7 +1260,7 @@
     customerFields
   ].filter(Boolean).join('\n');
 
-  const phone = '559992247544';
+  const phone = '5599991208641';
   const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
   window.open(url, '_blank');
 
